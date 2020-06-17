@@ -1,4 +1,6 @@
-export const data = [
+import { IMessage } from "./interfaces";
+
+export const data: IMessage[] = [
   {
     id: 1,
     direction: "in",
