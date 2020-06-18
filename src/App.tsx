@@ -7,7 +7,6 @@ import { IMessage } from "./interfaces";
 import { isUnread } from "./util";
 
 // TODO test on browsers
-// TODO tests
 
 interface State {
   messages: IMessage[];
@@ -52,13 +51,13 @@ class App extends React.PureComponent<{}, State> {
           />
           <div className="flex justify-between">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
+              className="btn-send bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
               onClick={this.onSend}
             >
               Send
             </button>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
+              className="btn-jump-to-unread bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
               onClick={this.jumpToUnread}
             >
               Jump to unread
