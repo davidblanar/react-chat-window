@@ -14,7 +14,7 @@ npm start
 ### Run in production mode
 ```
 npm run build
-npx serve -s buld
+npx serve -s build
 ```
 
 ### Run tests
