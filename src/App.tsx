@@ -6,8 +6,6 @@ import Message from "./Message";
 import { IMessage } from "./interfaces";
 import { isUnread } from "./util";
 
-// TODO test on browsers
-
 interface State {
   messages: IMessage[];
   unreadCount: number;
@@ -17,6 +15,7 @@ interface State {
 
 class App extends React.PureComponent<{}, State> {
   private readonly ref: React.RefObject<HTMLDivElement>;
+  private readonly chatWindowHeight: number;
   constructor(props) {
     super(props);
 
@@ -27,13 +26,18 @@ class App extends React.PureComponent<{}, State> {
       input: ""
     };
     this.ref = React.createRef();
+    this.chatWindowHeight = this.getChatWindowHeight();
   }
 
   render() {
     return (
       <div className="App pl-2 pr-2">
         <p>Unread messages: {this.state.unreadCount}</p>
-        <div className="chat-window" ref={this.ref}>
+        <div
+          className="chat-window"
+          ref={this.ref}
+          style={{ height: this.chatWindowHeight }}
+        >
           {this.state.messages.map((item) => (
             <Message
               message={item}
@@ -67,6 +71,11 @@ class App extends React.PureComponent<{}, State> {
       </div>
     );
   }
+
+  private getChatWindowHeight = (): number => {
+    // subtract height of input-wrapper, margin and unread messages panel
+    return window.innerHeight - 90 - 10 - 24;
+  };
 
   private onChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     this.setState({ input: e.currentTarget.value });
