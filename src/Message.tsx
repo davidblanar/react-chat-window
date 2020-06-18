@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { IMessage } from "./interfaces";
 
 interface Props {
   message: IMessage;
   onViewportEnter: (messageId: number) => void;
+  style?: CSSProperties;
 }
 
 const checkmark = String.fromCharCode(10003);
 
-const Message: React.FC<Props> = ({ message, onViewportEnter }) => {
+const Message: React.FC<Props> = ({ message, onViewportEnter, style }) => {
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -71,6 +72,7 @@ const Message: React.FC<Props> = ({ message, onViewportEnter }) => {
     <div
       className={getMessageClassName()}
       ref={ref}
+      style={style}
     >
       <div className="w-3/4 p-2 mt-4 border-solid border border-gray-600 rounded-m">
         <p className="text-gray-600 text-xs">{formattedDate}</p>

@@ -30,6 +30,41 @@ class App extends React.PureComponent<{}, State> {
     this.ref = React.createRef();
   }
 
+  render() {
+    return (
+      <div className="App pl-2 pr-2">
+        <p>Unread messages: {this.state.unreadCount}</p>
+        <div className="chat-window" ref={this.ref}>
+          {this.state.messages.map((item) => (
+            <Message message={item} key={item.id} onViewportEnter={this.onViewportEnter} />
+          ))}
+        </div>
+        <div className="input-wrapper">
+        <textarea
+          className="focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
+          placeholder="Type your message"
+          value={this.state.input}
+          onChange={this.onChange}
+        />
+          <div className="flex justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
+              onClick={this.onSend}
+            >
+              Send
+            </button>
+            {/*<button*/}
+            {/*  className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"*/}
+            {/*  onClick={jumpToUnread}*/}
+            {/*>*/}
+            {/*  Jump to unread*/}
+            {/*</button>*/}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   private onChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     this.setState({ input: e.currentTarget.value })
   };
@@ -64,42 +99,6 @@ class App extends React.PureComponent<{}, State> {
       }),
       unreadCount: prevState.unreadCount - 1
     }));
-  }
-
-  render() {
-    return (
-      <div className="App pl-2 pr-2">
-        <p>Unread messages: {this.state.unreadCount}</p>
-        <div className="chat-window" ref={this.ref}>
-          {/* TODO remove */}
-          {this.state.messages.map((item) => (
-            <Message message={item} key={item.id} onViewportEnter={this.onViewportEnter} />
-          ))}
-        </div>
-        <div className="input-wrapper">
-        <textarea
-          className="focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
-          placeholder="Type your message"
-          value={this.state.input}
-          onChange={this.onChange}
-        />
-          <div className="flex justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
-              onClick={this.onSend}
-            >
-              Send
-            </button>
-            {/*<button*/}
-            {/*  className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"*/}
-            {/*  onClick={jumpToUnread}*/}
-            {/*>*/}
-            {/*  Jump to unread*/}
-            {/*</button>*/}
-          </div>
-        </div>
-      </div>
-    );
   }
 };
 

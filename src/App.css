@@ -10,6 +10,6 @@
 
 .chat-window {
   /* subtract height of input-wrapper, margin and unread messages panel */
-  max-height: calc(100vh - 90px - 10px - 24px);
+  height: calc(100vh - 90px - 10px - 24px);
   overflow: auto;
 }
