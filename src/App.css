@@ -1,4 +1,15 @@
-.chat-window {
+.App {
   max-width: 500px;
   margin: 0 auto;
+}
+
+.input-wrapper {
+  height: 90px;
+  margin-top: 10px;
+}
+
+.chat-window {
+  /* subtract height of input-wrapper, margin and unread messages panel */
+  max-height: calc(100vh - 90px - 10px - 24px);
+  overflow: auto;
 }
