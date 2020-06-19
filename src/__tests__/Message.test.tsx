@@ -1,12 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Message from "../Message";
+import { MockObserver } from "../mocks";
 
 describe("Message", () => {
   it("should render correctly", () => {
     const msg = shallow(
       <Message
-        onViewportEnter={jest.fn()}
         message={{
           id: 1,
           text: "my message",
@@ -14,6 +14,7 @@ describe("Message", () => {
           direction: "in",
           status: "received"
         }}
+        observer={new MockObserver() as any}
       />
     );
     expect(msg.find(".message-date").text()).toBe("01 Jan 1970 - 01:00:01");
