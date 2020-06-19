@@ -26,6 +26,7 @@ class App extends React.PureComponent<{}, State> {
       input: ""
     };
     this.ref = React.createRef();
+    // calculate height to fix viewport issues on mobile phones
     this.chatWindowHeight = this.getChatWindowHeight();
   }
 
@@ -99,6 +100,7 @@ class App extends React.PureComponent<{}, State> {
           input: ""
         },
         () => {
+          // scroll to bottom of chat window after state update
           this.ref.current.scrollTop = this.ref.current.scrollHeight;
         }
       );
