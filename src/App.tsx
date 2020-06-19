@@ -16,6 +16,8 @@ interface State {
 class App extends React.PureComponent<{}, State> {
   private readonly ref: React.RefObject<HTMLDivElement>;
   private readonly chatWindowHeight: number;
+  private readonly observer: IntersectionObserver;
+
   constructor(props) {
     super(props);
 
@@ -28,6 +30,10 @@ class App extends React.PureComponent<{}, State> {
     this.ref = React.createRef();
     // calculate height to fix viewport issues on mobile phones
     this.chatWindowHeight = this.getChatWindowHeight();
+    this.observer = new IntersectionObserver(this.onObserved, {
+      rootMargin: "0px 0px 90px 0px",
+      threshold: 0.5
+    });
   }
 
   render() {
@@ -40,11 +46,7 @@ class App extends React.PureComponent<{}, State> {
           style={{ height: this.chatWindowHeight }}
         >
           {this.state.messages.map((item) => (
-            <Message
-              message={item}
-              key={item.id}
-              onViewportEnter={this.onViewportEnter}
-            />
+            <Message message={item} key={item.id} observer={this.observer} />
           ))}
         </div>
         <div className="input-wrapper">
@@ -107,18 +109,6 @@ class App extends React.PureComponent<{}, State> {
     }
   };
 
-  private onViewportEnter = (messageId: number) => {
-    this.setState((prevState) => ({
-      messages: prevState.messages.map((msg) => {
-        if (msg.id === messageId) {
-          return { ...msg, status: "read" };
-        }
-        return msg;
-      }),
-      unreadCount: prevState.unreadCount - 1
-    }));
-  };
-
   private jumpToUnread = () => {
     if (this.state.unreadCount !== 0) {
       const firstUnreadIdx = this.state.messages.findIndex(isUnread);
@@ -127,6 +117,27 @@ class App extends React.PureComponent<{}, State> {
       ];
       unreadMsg.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  private onObserved = (
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver
+  ) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = parseInt(entry.target.getAttribute("data-id"));
+        observer.unobserve(entry.target);
+        this.setState((prevState) => ({
+          messages: prevState.messages.map((msg) => {
+            if (msg.id === id) {
+              return { ...msg, status: "read" };
+            }
+            return msg;
+          }),
+          unreadCount: prevState.unreadCount - 1
+        }));
+      }
+    });
   };
 }
 
